@@ -5,7 +5,7 @@ import os
 import sys
 import time
 import drive
-from ev3dev2.motor import LargeMotor, OUTPUT_D, OUTPUT_B, SpeedPercent, MoveTank
+# from ev3dev2.motor import LargeMotor, OUTPUT_D, OUTPUT_B, SpeedPercent, MoveTank
 
 # state constants
 ON = True
@@ -59,8 +59,8 @@ def main():
     # exits
     time.sleep(1)
 
-    # robot = drive.DiffRobot
-    # robot.go_forward(distance=50)
+    robot = drive.DiffRobot()
+    robot.go_forward()
 
     debug_print('Test')
     

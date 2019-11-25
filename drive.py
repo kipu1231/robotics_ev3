@@ -6,7 +6,7 @@ PI = 3.141592653589793
 
 class DiffRobot(object):
     """docstring for DiffRobot"""
-    def __init__(self, diam, width, r_address=OUTPUT_A, l_address=OUTPUT_B):
+    def __init__(self, diam=56, width=28, r_address=OUTPUT_A, l_address=OUTPUT_B):
         super(DiffRobot, self).__init__()
         self.diam = diam
         self.width = width
