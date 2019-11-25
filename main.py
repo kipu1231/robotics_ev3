@@ -59,8 +59,8 @@ def main():
     # exits
     time.sleep(1)
 
-    robot = drive.DiffRobot
-    robot.go_forward(distance=50)
+    # robot = drive.DiffRobot
+    # robot.go_forward(distance=50)
 
     debug_print('Test')
     
