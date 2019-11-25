@@ -4,6 +4,8 @@
 import os
 import sys
 import time
+import drive
+from ev3dev2.motor import LargeMotor, OUTPUT_D, OUTPUT_B, SpeedPercent, MoveTank
 
 # state constants
 ON = True
@@ -55,7 +57,16 @@ def main():
 
     # wait a bit so you have time to look at the display before the program
     # exits
-    time.sleep(5)
+    time.sleep(1)
+
+    robot = drive.DiffRobot
+    robot.go_forward(distance=50)
+
+    debug_print('Test')
+    
+
+    time.sleep(5) 
+
 
 if __name__ == '__main__':
     main()
