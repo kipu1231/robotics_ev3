@@ -25,7 +25,7 @@ class DiffRobot(object):
                 m.run_to_rel_pos()
             while 'running' in self.motors[0].state: sleep(0.01)
 
-        else:
+        else: 
             for m in self.motors:
                 m.duty_cycle_sp = dc
                 m.run_direct()
