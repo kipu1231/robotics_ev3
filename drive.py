@@ -32,7 +32,7 @@ class DiffRobot(object):
 
     def go_backwards(self, distance=None, dc=60):
         if distance != None: distance = -distance
-        self.go_forwards(distance, -dc)
+        self.go_forward(distance, -dc)
 
     def turn_left(self, angle=None, dc=60):
         """docstring for turn_right"""

@@ -48,12 +48,12 @@ def main():
     '''The main function of our program'''
 
     # set the console just how we want it
-    reset_console()
-    set_cursor(OFF)
-    set_font('Lat15-Terminus24x12')
+    #reset_console()
+    #set_cursor(OFF)
+    #set_font('Lat15-Terminus24x12')
 
     # print something to the screen of the device
-    print('Hello World!')
+    #print('Hello World!')
 
     # print something to the output panel in VS Code
     debug_print('Hello VS Code!')
@@ -62,13 +62,29 @@ def main():
     # exits
     time.sleep(1)
 
+<<<<<<< HEAD
     #robot = drive.DiffRobot()
     #robot.go_forward()
     shovel = moveShovel.Shovel()
     shovel.moveShovel()
     
+=======
+    robot = drive.DiffRobot()
+    #print(robot.motors)
+    #robot.go_forward()
+>>>>>>> changes in drive
 
-    debug_print('Test')
+    #time.sleep(1)
+
+    #robot.turn_left()
+
+    #time.sleep(1)
+
+    robot.go_backwards():
+
+    
+
+    #debug_print('Test')
     
 
     time.sleep(5) 
