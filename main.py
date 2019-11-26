@@ -6,8 +6,10 @@ import sys
 import time
 import drive
 import moveShovel
+import playMusic
 from ev3dev2.motor import LargeMotor, OUTPUT_C
 from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
+
 # from ev3dev2.motor import LargeMotor, OUTPUT_D, OUTPUT_B, SpeedPercent, MoveTank
 
 # state constants
@@ -67,7 +69,9 @@ def main():
     #robot.go_forward()
     shovel = moveShovel.Shovel()
     shovel.moveShovel()
+    time.sleep(1)
     
+<<<<<<< HEAD
 =======
     robot = drive.DiffRobot()
     #print(robot.motors)
@@ -83,6 +87,10 @@ def main():
     robot.go_backwards():
 
     
+=======
+    music = playMusic.Music()
+    music.playMusic()
+>>>>>>> play Music funtion (important)
 
     #debug_print('Test')
     
