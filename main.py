@@ -5,6 +5,9 @@ import os
 import sys
 import time
 import drive
+import moveShovel
+from ev3dev2.motor import LargeMotor, OUTPUT_C
+from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 # from ev3dev2.motor import LargeMotor, OUTPUT_D, OUTPUT_B, SpeedPercent, MoveTank
 
 # state constants
@@ -59,8 +62,11 @@ def main():
     # exits
     time.sleep(1)
 
-    robot = drive.DiffRobot()
-    robot.go_forward()
+    #robot = drive.DiffRobot()
+    #robot.go_forward()
+    shovel = moveShovel.Shovel()
+    shovel.moveShovel()
+    
 
     debug_print('Test')
     
