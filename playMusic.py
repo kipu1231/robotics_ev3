@@ -15,5 +15,5 @@ class Music(object):
     #fuerElise is already in another foulder on the robot. maybe we dont have to download it every time now.
     #  Change code therefore and maybe folder
     def playMusic(self):
-        self.sound.play_file('/home/robot/robotics_ev3/fuerElise.wav') 
+        self.sound.play_file('/home/robot/robotics_ev3/Sounds/fuerElise.wav') 
         self.sound.beep()
