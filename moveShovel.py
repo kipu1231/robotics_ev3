@@ -5,6 +5,7 @@ from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from time import sleep
 PI = 3.141592653589793
 
+
 class Shovel(object):
     """docstring for DiffRobot"""
     def __init__(self, r_address=OUTPUT_C):
@@ -16,4 +17,20 @@ class Shovel(object):
         self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)
         sleep(1)
         self.motors.on_for_degrees(speed=20, degrees=120, brake=True, block=True)
+
+        self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)
+        sleep(1)
+        self.motors.on_for_degrees(speed=20, degrees=120, brake=True, block=True)
+
+        self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)
+        sleep(1)
+        self.motors.on_for_degrees(speed=20, degrees=120, brake=True, block=True)
+       
+       
+       #i = 3
+
+        #while i > 0:
+            
+       
+        #i = i-1
     

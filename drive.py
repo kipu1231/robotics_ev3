@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-from ev3dev2.auto import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D
+from ev3dev2.auto import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, UltrasonicSensor
 from time import sleep
+from random import choice, randint
 PI = 3.141592653589793
 
 class DiffRobot(object):
@@ -12,9 +13,51 @@ class DiffRobot(object):
         self.width = width
         self.motors = [LargeMotor(address) for address in (r_address, l_address)]
         self.reset_position()
+        self.infrared = UltrasonicSensor(address = '1')
+        self.infrared_side = UltrasonicSensor(address = '2')
+
+        # Put the infrared sensor into proximity mode.
+        self.infrared.mode = 'US-DIST-CM'
+        self.infrared_side.mode = 'US-DIST-CM'
+
+    def start(self):
+        for m in self.motors:
+            m.run_forever()
+    
+    def backup(self):
+        # Sound backup alarm.
+        Sound.tone([(1000, 500, 500)] * 3)
+
+        # Stop both motors and reverse for 1.5 seconds.
+        # `run-timed` command will return immediately, so we will have to wait
+        # until both motors are stopped before continuing.
+        for m in self.motors:
+            m.stop(stop_action='brake')
+            m.run_timed(speed_sp=-500, time_sp=1500)
+
+        # When motor is stopped, its `state` attribute returns empty list.
+        # Wait until both motors are stopped:
+        while any(m.state for m in self.motors):
+            sleep(0.1)
+
+    def turn(self):
+
+        # We want to turn the robot wheels in opposite directions from 1/4 to 3/4
+        # of a second. Use `random.choice()` to decide which wheel will turn which
+        # way.
+        power = choice([(1, -1), (-1, 1)])
+        t = randint(250, 750)
+
+        for m, p in zip(self.motors, power):
+            m.run_timed(speed_sp=p*500, time_sp=t)
+
+        # Wait until both motors are stopped:
+        while any(m.state for m in self.motors):
+            sleep(0.1)
+
 
     def go_forward(self, distance=None, dc=60):
-        """docstring for go_forwards"""
+        
         if distance != None:
 
             turns = distance/(self.diam * PI)
@@ -35,7 +78,7 @@ class DiffRobot(object):
         self.go_forward(distance, -dc)
 
     def turn_left(self, angle=None, dc=60):
-        """docstring for turn_right"""
+        
         if angle != None:
 
             turns_per_spin = self.width/self.diam
