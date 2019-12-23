@@ -69,55 +69,59 @@ def main():
     time.sleep(1)
 
     robot = drive.DiffRobot()
-    #shovel = moveShovel.Shovel()
+    shovel = moveShovel.Shovel()
     #print(robot.motors)
-    #robot.go_forward()
+    while True:
+      robot.go_forward()
+      shovel.moveShovel()
+      time.sleep(5)
 
-    time.sleep(1)
-
-    shovel.moveShovel()
+  
+      
+      
+      
     #robot.turn_left()
 
     #time.sleep(1)
 
     # Run the robot until a button is pressed.
-    robot.start()
+    #robot.start()
     # while not btn.any():   NOT WORKING
-    while True:    # Stop program with Ctrl-C
-        # Infrared sensor in proximity mode will measure distance to the closest
-        # object in front of it.
-        distance = robot.infrared.value()
-        distance_side = robot.infrared_side.value()
-        dc_turn = 0
-        dc = 0
+    # while True:    # Stop program with Ctrl-C
+    #     # Infrared sensor in proximity mode will measure distance to the closest
+    #     # object in front of it.
+    #     distance = robot.infrared.value()
+    #     distance_side = robot.infrared_side.value()
+    #     dc_turn = 0
+    #     dc = 0
 
-        if distance_side < 100:
-            dc = 0
-            dc_turn = 80
+    #     if distance_side < 100:
+    #         dc = 0
+    #         dc_turn = 80
          
-        elif distance > 200:
-            # Path is clear, run at full speed.
-            dc = 90
-            dc_turn = 0
-        elif distance < 150:
-            dc = 0
-            dc_turn = 80
-        else:
-            # Obstacle ahead, slow down.
-            dc = 40
-            dc_turn = 0
+    #     elif distance > 200:
+    #         # Path is clear, run at full speed.
+    #         dc = 90
+    #         dc_turn = 0
+    #     elif distance < 150:
+    #         dc = 0
+    #         dc_turn = 80
+    #     else:
+    #         # Obstacle ahead, slow down.
+    #         dc = 40
+    #         dc_turn = 0
 
-        for m in robot.motors:
-            robot.go_forward(distance=None, dc=dc)
+    #     for m in robot.motors:
+    #         robot.go_forward(distance=None, dc=dc)
             
-            if dc_turn > 0:
-                robot.go_forward(distance=None, dc=dc)
-                robot.turn_right(angle=None, dc=dc_turn)
+    #         if dc_turn > 0:
+    #             robot.go_forward(distance=None, dc=dc)
+    #             robot.turn_right(angle=None, dc=dc_turn)
             
-            #m.speed_sp = dc
-            #m.duty_cycle_sp = dc
+    #         #m.speed_sp = dc
+    #         #m.duty_cycle_sp = dc
 
-        sleep(0.1)
+    #     sleep(0.1)
         
          
 

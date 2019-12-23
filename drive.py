@@ -13,12 +13,12 @@ class DiffRobot(object):
         self.width = width
         self.motors = [LargeMotor(address) for address in (r_address, l_address)]
         self.reset_position()
-        self.infrared = UltrasonicSensor(address = '1')
-        self.infrared_side = UltrasonicSensor(address = '2')
+        #self.infrared = UltrasonicSensor(address = '1')
+        #self.infrared_side = UltrasonicSensor(address = '2')
 
         # Put the infrared sensor into proximity mode.
-        self.infrared.mode = 'US-DIST-CM'
-        self.infrared_side.mode = 'US-DIST-CM'
+        #self.infrared.mode = 'US-DIST-CM'
+        #self.infrared_side.mode = 'US-DIST-CM'
 
     def start(self):
         for m in self.motors:
