@@ -7,6 +7,7 @@ import time
 from time import sleep
 import drive
 import moveShovel
+import playMusic
 from ev3dev2.motor import LargeMotor, OUTPUT_C
 from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from threading import Thread
@@ -72,8 +73,9 @@ def main():
     #print(robot.motors)
     #robot.go_forward()
 
-    #time.sleep(1)
+    time.sleep(1)
 
+    shovel.moveShovel()
     #robot.turn_left()
 
     #time.sleep(1)
