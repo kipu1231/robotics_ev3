@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import random
 import time
+import os
+import sys
 
 from drive import *
 from moveShovel import *
@@ -8,6 +10,28 @@ from playMusic import *
 from robot import Robot
 from sweeper import Sweeper
 from dfs_sweeper import DFSSweeper
+
+def debug_print(*args, **kwargs):
+    '''Print debug messages to stderr. This shows up in the output panel in VS Code.
+    '''
+    print(*args, **kwargs, file=sys.stderr)
+
+def reset_console():
+    '''Resets the console to the default state'''
+    print('\x1Bc', end='')
+
+def set_cursor(state):
+    '''Turn the cursor on or off'''
+    if state:
+        print('\x1B[?25h', end='')
+    else:
+        print('\x1B[?25l', end='')
+
+def set_font(name):
+    '''Sets the console font. A full list of fonts can be found with `ls /usr/share/consolefonts`
+    '''
+    os.system('setfont ' + name)
+
 
 def random_matrix(no_rows, no_cols, no_obs):
     arr = []
@@ -63,9 +87,9 @@ def fixed_matrix(no_rows, no_cols, no_obs):
 
 
 def main():
-    no_rows = 10
-    no_cols = 9
-    no_obs = 10
+    no_rows = 5
+    no_cols = 5
+    no_obs = 2
     no_matrix = 1
 
     total_elapsed_bfs = 0
@@ -76,14 +100,17 @@ def main():
     total_steps_dfs = 0
     total_turns_dfs = 0
 
-    import time
     for i in range(no_matrix):
         ''' Initialize Matrix, robot and start position '''
         ############ HERE Add initialization of EV3
         #matrix, start_position = random_matrix(no_rows, no_cols, no_obs)
+        print("[INFO] Initialising Matrix...")
+        debug_print("[INFO] Initialising Matrix...")
         matrix, start_position = fixed_matrix(no_rows, no_cols, no_obs)
         start_direction = random.Random(4).randint(0, 3)
 
+        print("[INFO] Initialising Robot and Sweeper...")
+        debug_print("[INFO] Initialising Robot and Sweeper...")
         # initialise robot
         diffRobot = DiffRobot()
         # run with dfs
@@ -93,9 +120,13 @@ def main():
         sweeper.loggable = False
         robot.loggable = True
 
+        print("[INFO] Starting DFS sweep...")
+        debug_print("[INFO] Starting DFS sweep...")
         start = time.time()
         sweeper.sweep()
         elapsed = time.time() - start
+        print("[INFO] Finished DFS sweep...")
+        debug_print("[INFO] Finished DFS sweep...")
 
         total_elapsed_dfs += elapsed
         total_steps_dfs += robot.move_count
