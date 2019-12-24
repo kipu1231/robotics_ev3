@@ -3,6 +3,22 @@ import random
 import time
 import os
 import sys
+import time
+from time import sleep
+import drive
+import moveShovel
+import playMusic
+import drive_gyro
+from ev3dev2.motor import LargeMotor, OUTPUT_C
+from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
+from threading import Thread
+from ev3dev2.sensor.lego import GyroSensor
+from ev3dev2.sensor import INPUT_1, INPUT_2
+# from ev3dev2.motor import LargeMotor, OUTPUT_D, OUTPUT_B, SpeedPercent, MoveTank
+
+# state constants
+ON = True
+OFF = False
 
 from drive import *
 from moveShovel import *
@@ -49,14 +65,7 @@ def random_matrix(no_rows, no_cols, no_obs):
     matrix = []
     count = 0
     for i in range(no_rows):
-        row = []
-        for j in range(no_cols):
-            row.append(arr[i * no_cols + j])
-            if arr[j] == 0:
-                if count == rand_pos:
-                    start_position = {'x': j, 'y': i}
-                count += 1
-        matrix.append(row)
+      trix.append(row)
     return matrix, start_position
 
 def fixed_matrix(no_rows, no_cols, no_obs):
