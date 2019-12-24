@@ -1,6 +1,6 @@
 from utils import sin, cos
 
-class Robot(object):
+class Robot(object, DiffRobot):
 
     def __init__(self, matrix, start_position, start_direction):
         self.matrix = matrix
@@ -10,18 +10,21 @@ class Robot(object):
         self.move_count = 0
         self.turn_count = 0
         self.loggable = False
+        self.diffrobot = DiffRobot
 
     def turn_left(self):
         """turn 90 degree counter-clockwise"""
         ###### add the connection to EV3 here!!
         self.current_direction = (self.current_direction + 1) % 4
         self.turn_count += 1
+        self.diffrobot.turn_left(angle=90, dc=60)
         return self
 
     def turn_right(self):
         """turn 90 degree clockwise"""
         self.current_direction = (self.current_direction + 3) % 4
         self.turn_count += 1
+        self.diffrobot.turn_right(angle=90, dc=60)
         return self
 
     def move(self):
@@ -35,6 +38,7 @@ class Robot(object):
         self.current_position['x'] = next_pos_x
         self.current_position['y'] = next_pos_y
         self.__visited_position[str(next_pos_x) + "_" + str(next_pos_y)] = 1
+        self.diffrobot.go_forward(distance=20, dc=60)
         if self.loggable:
             self.log()
         return True
