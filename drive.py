@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ev3dev2.auto import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, UltrasonicSensor
+from ev3dev2.auto import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, UltrasonicSensor, MoveSteering
 from time import sleep
 from random import choice, randint
 
@@ -22,6 +22,7 @@ class DiffRobot(object):
         self.width = width
         self.motors = [LargeMotor(address) for address in (r_address, l_address)]
         self.reset_position()
+        self.steer_pair = MoveSteering(r_address, l_address)
         #self.infrared = UltrasonicSensor(address = '1')
         #self.infrared_side = UltrasonicSensor(address = '2')
 
@@ -72,10 +73,16 @@ class DiffRobot(object):
 
             turns = distance/(self.diam * PI)
 
+            print("[INFO] Jumps in none...")
+            debug_print("[INFO] Jumps in none...")
+            debug_print(turns)
+
             for m in self.motors:
                 m.duty_cycle_sp = dc
+                #self.steer_pair.on_for_rotations(0,speed=60,rotations=turns*360)
                 m.position_sp = turns*360
                 m.run_to_rel_pos()
+                m.run_to_rel_pos(position_sp = turns*360, speed_sp=200)
             while 'running' in self.motors[0].state: sleep(0.01)
 
         else: 
@@ -88,6 +95,8 @@ class DiffRobot(object):
         self.go_forward(distance, -dc)
 
     def turn_left(self, angle=None, dc=60):
+        print("[INFO] Turn left...")
+        debug_print("[INFO] Turn left...")
         
         if angle != None:
 
@@ -96,6 +105,7 @@ class DiffRobot(object):
 
             for m in self.motors:
                 m.duty_cycle_sp = dc
+                #self.steer_pair.on_for_rotations(0,speed=60,rotations=turns)
                 m.position_sp = turns*360
                 m.run_to_rel_pos()
                 dc = -dc
@@ -109,6 +119,9 @@ class DiffRobot(object):
                 dc = -dc
 
     def turn_right(self, angle=None, dc=60):
+        print("[INFO] Turn right...")
+        debug_print("[INFO] Turn right...")
+
         if angle != None: angle = -angle
         self.turn_left(angle, -dc)
 
@@ -119,3 +132,4 @@ class DiffRobot(object):
     def reset_position(self):
         for m in self.motors:
             m.position = 0
+    

@@ -123,26 +123,26 @@ def main():
         # initialise robot
         diffRobot = DiffRobot()
         # run with dfs
-        robot = Robot(matrix, start_position, start_direction, diffRobot)
-        # robot.log()
-        sweeper = DFSSweeper(robot)
-        sweeper.loggable = False
-        robot.loggable = True
+        #robot = Robot(matrix, start_position, start_direction, diffRobot)
+        #robot.log()
+        #sweeper = DFSSweeper(robot)
+        #sweeper.loggable = False
+        #robot.loggable = True
 
-        print("[INFO] Starting DFS sweep...")
-        debug_print("[INFO] Starting DFS sweep...")
-        start = time.time()
-        sweeper.sweep()
-        elapsed = time.time() - start
-        print("[INFO] Finished DFS sweep...")
-        debug_print("[INFO] Finished DFS sweep...")
+        #print("[INFO] Starting DFS sweep...")
+        #debug_print("[INFO] Starting DFS sweep...")
+        #start = time.time()
+        #sweeper.sweep()
+        #elapsed = time.time() - start
+        #print("[INFO] Finished DFS sweep...")
+        #debug_print("[INFO] Finished DFS sweep...")
 
-        total_elapsed_dfs += elapsed
-        total_steps_dfs += robot.move_count
-        total_turns_dfs += robot.turn_count
+        #total_elapsed_dfs += elapsed
+        #total_steps_dfs += robot.move_count
+        #total_turns_dfs += robot.turn_count
 
-        print('steps taken by dfs: %d, turns taken: %d, time taken: %.2fms'
-              % (robot.move_count, robot.turn_count, elapsed * 1000))
+        #print('steps taken by dfs: %d, turns taken: %d, time taken: %.2fms'
+        #      % (robot.move_count, robot.turn_count, elapsed * 1000))
 
         # run with bfs
         robot = Robot(matrix, start_position, start_direction, diffRobot)
@@ -150,9 +150,9 @@ def main():
         sweeper.loggable = False
         robot.loggable = True
 
-        # start = time.time()
-        # sweeper.sweep()
-        # elapsed = time.time() - start
+        start = time.time()
+        sweeper.sweep()
+        elapsed = time.time() - start
 
         total_elapsed_bfs += elapsed
         total_steps_bfs += robot.move_count
