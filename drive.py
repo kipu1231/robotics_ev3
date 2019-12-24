@@ -3,7 +3,16 @@
 from ev3dev2.auto import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, UltrasonicSensor
 from time import sleep
 from random import choice, randint
+
+import os
+import sys
+
 PI = 3.141592653589793
+
+def debug_print(*args, **kwargs):
+    '''Print debug messages to stderr. This shows up in the output panel in VS Code.
+    '''
+    print(*args, **kwargs, file=sys.stderr)
 
 class DiffRobot(object):
     """docstring for DiffRobot"""
@@ -57,7 +66,8 @@ class DiffRobot(object):
 
 
     def go_forward(self, distance=None, dc=60):
-        
+        print("[INFO] Moving forward...")
+        debug_print("[INFO] Moving forward...")
         if distance != None:
 
             turns = distance/(self.diam * PI)
