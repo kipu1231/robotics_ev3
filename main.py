@@ -1,152 +1,132 @@
 #!/usr/bin/env python3
-'''Hello to the world from ev3dev.org'''
-
-import os
-import sys
+import random
 import time
-from time import sleep
-import drive
-import moveShovel
-import playMusic
-from ev3dev2.motor import LargeMotor, OUTPUT_C
-from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
-from threading import Thread
-# from ev3dev2.motor import LargeMotor, OUTPUT_D, OUTPUT_B, SpeedPercent, MoveTank
 
-# state constants
-ON = True
-OFF = False
+from drive import *
+from moveShovel import *
+from playMusic import *
+from robot import Robot
+from sweeper import Sweeper
+from dfs_sweeper import DFSSweeper
 
+def random_matrix(no_rows, no_cols, no_obs):
+    arr = []
+    for i in range(no_rows * no_cols):
+        if i < no_obs:
+            arr.append(1)
+        else:
+            arr.append(0)
 
-def debug_print(*args, **kwargs):
-    '''Print debug messages to stderr.
+    random.shuffle(arr)
 
-    This shows up in the output panel in VS Code.
-    '''
-    print(*args, **kwargs, file=sys.stderr)
+    start_position = {'x': 0, 'y': 0}
+    rand_pos = random.randint(0, no_rows * no_cols - no_obs - 1)
 
+    matrix = []
+    count = 0
+    for i in range(no_rows):
+        row = []
+        for j in range(no_cols):
+            row.append(arr[i * no_cols + j])
+            if arr[j] == 0:
+                if count == rand_pos:
+                    start_position = {'x': j, 'y': i}
+                count += 1
+        matrix.append(row)
+    return matrix, start_position
 
-def reset_console():
-    '''Resets the console to the default state'''
-    print('\x1Bc', end='')
+def fixed_matrix(no_rows, no_cols, no_obs):
+    arr = []
+    for i in range(no_rows * no_cols):
+        if i < no_obs:
+            arr.append(1)
+        else:
+            arr.append(0)
 
+    random.Random(4).shuffle(arr)
 
-def set_cursor(state):
-    '''Turn the cursor on or off'''
-    if state:
-        print('\x1B[?25h', end='')
-    else:
-        print('\x1B[?25l', end='')
+    start_position = {'x': 0, 'y': 0}
+    rand_pos = random.Random(4).randint(0, no_rows * no_cols - no_obs - 1)
 
-
-def set_font(name):
-    '''Sets the console font
-
-    A full list of fonts can be found with `ls /usr/share/consolefonts`
-    '''
-    os.system('setfont ' + name)
-
-
-
+    matrix = []
+    count = 0
+    for i in range(no_rows):
+        row = []
+        for j in range(no_cols):
+            row.append(arr[i * no_cols + j])
+            if arr[j] == 0:
+                if count == rand_pos:
+                    start_position = {'x': j, 'y': i}
+                count += 1
+        matrix.append(row)
+    return matrix, start_position
 
 
 def main():
-    '''The main function of our program'''
+    no_rows = 10
+    no_cols = 9
+    no_obs = 10
+    no_matrix = 1
 
-    # set the console just how we want it
-    #reset_console()
-    #set_cursor(OFF)
-    #set_font('Lat15-Terminus24x12')
+    total_elapsed_bfs = 0
+    total_steps_bfs = 0
+    total_turns_bfs = 0
 
-    # print something to the screen of the device
-    #print('Hello World!')
+    total_elapsed_dfs = 0
+    total_steps_dfs = 0
+    total_turns_dfs = 0
 
-    # print something to the output panel in VS Code
-    debug_print('Hello VS Code!')
+    import time
+    for i in range(no_matrix):
+        ''' Initialize Matrix, robot and start position '''
+        ############ HERE Add initialization of EV3
+        #matrix, start_position = random_matrix(no_rows, no_cols, no_obs)
+        matrix, start_position = fixed_matrix(no_rows, no_cols, no_obs)
+        start_direction = random.Random(4).randint(0, 3)
 
-    # wait a bit so you have time to look at the display before the program
-    # exits
-    time.sleep(1)
+        # run with dfs
+        robot = Robot(matrix, start_position, start_direction)
+        # robot.log()
+        sweeper = DFSSweeper(robot)
+        sweeper.loggable = False
+        robot.loggable = True
 
-    robot = drive.DiffRobot()
-    shovel = moveShovel.Shovel()
-    #print(robot.motors)
-    while True:
-      robot.go_forward()
-      shovel.moveShovel()
-      time.sleep(5)
+        start = time.time()
+        sweeper.sweep()
+        elapsed = time.time() - start
 
-  
-      
-      
-      
-    #robot.turn_left()
+        total_elapsed_dfs += elapsed
+        total_steps_dfs += robot.move_count
+        total_turns_dfs += robot.turn_count
 
-    #time.sleep(1)
+        print('steps taken by dfs: %d, turns taken: %d, time taken: %.2fms'
+              % (robot.move_count, robot.turn_count, elapsed * 1000))
 
-    # Run the robot until a button is pressed.
-    #robot.start()
-    # while not btn.any():   NOT WORKING
-    # while True:    # Stop program with Ctrl-C
-    #     # Infrared sensor in proximity mode will measure distance to the closest
-    #     # object in front of it.
-    #     distance = robot.infrared.value()
-    #     distance_side = robot.infrared_side.value()
-    #     dc_turn = 0
-    #     dc = 0
+        # run with bfs
+        robot = Robot(matrix, start_position, start_direction)
+        sweeper = Sweeper(robot)
+        sweeper.loggable = False
+        robot.loggable = True
 
-    #     if distance_side < 100:
-    #         dc = 0
-    #         dc_turn = 80
-         
-    #     elif distance > 200:
-    #         # Path is clear, run at full speed.
-    #         dc = 90
-    #         dc_turn = 0
-    #     elif distance < 150:
-    #         dc = 0
-    #         dc_turn = 80
-    #     else:
-    #         # Obstacle ahead, slow down.
-    #         dc = 40
-    #         dc_turn = 0
+        # start = time.time()
+        # sweeper.sweep()
+        # elapsed = time.time() - start
 
-    #     for m in robot.motors:
-    #         robot.go_forward(distance=None, dc=dc)
-            
-    #         if dc_turn > 0:
-    #             robot.go_forward(distance=None, dc=dc)
-    #             robot.turn_right(angle=None, dc=dc_turn)
-            
-    #         #m.speed_sp = dc
-    #         #m.duty_cycle_sp = dc
+        total_elapsed_bfs += elapsed
+        total_steps_bfs += robot.move_count
+        total_turns_bfs += robot.turn_count
 
-    #     sleep(0.1)
-        
-         
+        print('steps taken by planned bfs: %d, turns taken: %d, time taken: %.2fms'
+              % (robot.move_count, robot.turn_count, elapsed * 1000))
 
-    # Stop the motors before exiting.
-    for m in robot.motors:
-        m.stop()
-    
-           
+        # sweeper.print_map()
+        # robot.log()
 
-    #debug_print('Test')
-    
+    print('DFS: average steps taken: %d, turns taken: %d, time taken: %.2fms'
+         % (int(total_steps_dfs / no_matrix), int(total_turns_dfs / no_matrix), total_elapsed_dfs * 1000 / no_matrix))
 
-    time.sleep(5) 
-
+    print('Planned BFS: average steps taken: %d, turns taken: %d, time taken: %.2fms'
+         % (int(total_steps_bfs / no_matrix), int(total_turns_bfs / no_matrix), total_elapsed_bfs * 1000 / no_matrix))
 
 if __name__ == '__main__':
     main()
-    #debug_print('Hello VS Code!')
-
-    #robot = drive.DiffRobot()
-    #shovel = moveShovel.Shovel()
-
-    #t = Thread(target=shovel.moveShovel())
-    #ts = Thread(target=robot.go_backwards())
-    #t.start()
-    #ts.start()
-    #t.join()
-    #ts.join()
