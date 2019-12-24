@@ -136,7 +136,7 @@ def main():
               % (robot.move_count, robot.turn_count, elapsed * 1000))
 
         # run with bfs
-        robot = Robot(matrix, start_position, start_direction)
+        robot = Robot(matrix, start_position, start_direction, diffRobot)
         sweeper = Sweeper(robot)
         sweeper.loggable = False
         robot.loggable = True
