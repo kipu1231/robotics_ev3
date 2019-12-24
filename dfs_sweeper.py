@@ -1,3 +1,11 @@
+import os
+import sys
+
+def debug_print(*args, **kwargs):
+    '''Print debug messages to stderr. This shows up in the output panel in VS Code.
+    '''
+    print(*args, **kwargs, file=sys.stderr)
+
 class DFSSweeper(object):
     def __init__(self, robot):
         self.observed_map = {}
@@ -8,6 +16,8 @@ class DFSSweeper(object):
         self.move({'x': 0, 'y': 0}, 0)
 
     def move(self, cur, dir):
+        print("[INFO] Current position: ({},{})".format(cur['x'],cur['y']))
+        debug_print("[INFO] Current position: ({},{})".format(cur['x'],cur['y']))
         #ALGORITHM
         #Visit child of current node, mark as visited and move on the its children
         self.observed_map[str(cur['x'])+'_'+str(cur['y'])] = 1

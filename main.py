@@ -162,4 +162,8 @@ def main():
          % (int(total_steps_bfs / no_matrix), int(total_turns_bfs / no_matrix), total_elapsed_bfs * 1000 / no_matrix))
 
 if __name__ == '__main__':
+    # set the console just how we want it
+    reset_console()
+    set_cursor(False)
+    set_font('Lat15-Terminus24x12')
     main()
