@@ -1,8 +1,8 @@
 from utils import sin, cos
 
-class Robot(object, DiffRobot):
+class Robot(object):
 
-    def __init__(self, matrix, start_position, start_direction):
+    def __init__(self, matrix, start_position, start_direction, DiffRobot):
         self.matrix = matrix
         self.current_position = {'x': start_position['x'], 'y': start_position['y']}
         self.current_direction = start_direction

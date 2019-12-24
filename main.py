@@ -84,8 +84,10 @@ def main():
         matrix, start_position = fixed_matrix(no_rows, no_cols, no_obs)
         start_direction = random.Random(4).randint(0, 3)
 
+        # initialise robot
+        diffRobot = DiffRobot()
         # run with dfs
-        robot = Robot(matrix, start_position, start_direction)
+        robot = Robot(matrix, start_position, start_direction, diffRobot)
         # robot.log()
         sweeper = DFSSweeper(robot)
         sweeper.loggable = False
