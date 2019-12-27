@@ -98,7 +98,8 @@
         app2.load_app();
         app3.load_app();
 
-        let input = random_matrix(rows, cols, obstacles);
+        //let input = random_matrix(rows, cols, obstacles);
+        let input = fixed_matrix(rows, cols, obstacles);
 
         app1.begin();
         robot1 = new Robot(input.matrix, input.start_position, 3, app1);
@@ -167,6 +168,39 @@
             }
             app3.finish();
         });
+    }
+
+    function fixed_matrix(no_rows, no_cols, no_obs) {
+        let arr = [];
+        for (let i = 0; i < no_rows * no_cols; i++) {
+            arr.push(i < 0 ? 1 : 0);
+        }
+
+        arr[5] = 1;
+        arr[16] = 1;
+
+        let start_position = {x: 0, y: 0};
+        let rand_pos = 6;
+
+        let matrix = [];
+        let count = 0;
+        for(let i = 0; i < no_rows; i++) {
+            let row = [];
+            for(let j = 0; j < no_cols; j++) {
+                let item = arr[i * no_cols + j];
+                row.push(item);
+                if(item == 0) {
+                    if (count == rand_pos)
+                        start_position = {x: j, y: i};
+                    count ++;
+                }
+            }
+            matrix.push(row);
+        }
+        return {
+            matrix: matrix,
+            start_position: start_position
+        }
     }
 
     function random_matrix(no_rows, no_cols, no_obs) {
