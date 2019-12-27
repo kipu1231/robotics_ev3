@@ -3,6 +3,7 @@
 from ev3dev2.auto import LargeMotor,MoveSteering, MoveTank, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, GyroSensor
 from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from time import sleep
+import time
 import sys
 PI = 3.141592653589793
 
@@ -15,6 +16,8 @@ class Drive_gyro(object):
     """docstring for DiffRobot"""
     def __init__(self, diam=56, width=28, r_address=OUTPUT_A, l_address=OUTPUT_B):
         super(Drive_gyro, self).__init__()
+        self.diam = diam
+        self.width = width
         self.motors = [LargeMotor(address) for address in (r_address, l_address)]
         self.tank_pair = MoveTank(r_address, l_address)
         self.steer_pair = MoveSteering(r_address, l_address)
@@ -23,15 +26,20 @@ class Drive_gyro(object):
         self.gs.mode = 'GYRO-ANG'
         # self.gs.reset()
     
-    def driveGyro(self):
-        self.gs.reset()
-        while True:
-            angle = self.gs.value()
-            debug_print(angle)
-            # if angle >=-100 and angle<=100:
-            #     self.steer_pair.on_for_rotations(angle, speed=30, rotations=10)
-            #     self.steer_pair.off()
-            sleep(2)
+    def driveGyro(self,distance=None, dc=40):
+        angle = self.gs.value()
+        debug_print(angle)
+        if distance != None:
+            turns = distance/(self.diam * PI)
+            debug_print(turns)
+            now = time.time()
+            future = now + 2
+            while time.time() < future:
+                angle2 = self.gs.value()
+                angle_drive = angle2-angle
+                self.steer_pair.on(angle_drive, speed=dc)
+            self.steer_pair.off()
+            
 
     def go_forward(self, distance=None, dc=60):
         print("[INFO] Moving forward...")
@@ -51,7 +59,7 @@ class Drive_gyro(object):
                 m.duty_cycle_sp = dc
                 m.run_direct()
         
-    def turnLeft_Gyro(self,degree=90):
+    def turnLeft_Gyro(self,degree=89):
         angle = self.gs.value() - degree
         while self.gs.value() > angle:
             diff = self.gs.value() - angle
@@ -59,7 +67,7 @@ class Drive_gyro(object):
         debug_print(self.gs.value())
         self.steer_pair.off()
 
-    def turnRight_Gyro(self, degree=90):
+    def turnRight_Gyro(self, degree=89):
         angle = self.gs.value() + degree
         while self.gs.value() < angle:
             diff = angle - self.gs.value()
