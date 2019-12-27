@@ -19,8 +19,9 @@ class Robot(object):
         ###### add the connection to EV3 here!!
         self.current_direction = (self.current_direction + 1) % 4
         self.turn_count += 1
-        self.diffrobot.turn_left(angle=650, dc=100)
-        self.shovel.moveShovel()
+        #self.diffrobot.turn_left(angle=650, dc=100)
+        self.diffrobot.turn_left()
+        #self.shovel.moveShovel()
         #sleep(3)
         return self
 
@@ -28,8 +29,9 @@ class Robot(object):
         """turn 90 degree clockwise"""
         self.current_direction = (self.current_direction + 3) % 4
         self.turn_count += 1
-        self.diffrobot.turn_right(angle=650, dc=100)
-        self.shovel.moveShovel()
+        #self.diffrobot.turn_right(angle=650, dc=100)
+        self.diffrobot.turn_right()
+        #self.shovel.moveShovel()
         #sleep(3)
         return self
 
@@ -44,7 +46,8 @@ class Robot(object):
         self.current_position['x'] = next_pos_x
         self.current_position['y'] = next_pos_y
         self.__visited_position[str(next_pos_x) + "_" + str(next_pos_y)] = 1
-        self.diffrobot.go_forward(distance=200, dc=100)
+        #self.diffrobot.go_forward(distance=200, dc=100)
+        self.diffrobot.driveGyro(10)
         self.shovel.moveShovel()
         #sleep(3)
         if self.loggable:

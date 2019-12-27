@@ -27,6 +27,7 @@ class Drive_gyro(object):
         # self.gs.reset()
     
     def driveGyro(self,distance=None, dc=40):
+        debug_print("[INFO] Moving forward...")
         angle = self.gs.value()
         debug_print(angle)
         if distance != None:
@@ -60,20 +61,22 @@ class Drive_gyro(object):
                 m.duty_cycle_sp = dc
                 m.run_direct()
         
-    def turnLeft_Gyro(self,degree=89):
+    def turn_left(self,degree=89):
+        debug_print("[INFO] Turn left ...")
         angle = self.gs.value() - degree
         while self.gs.value() > angle:
             diff = self.gs.value() - angle
             self.steer_pair.on(-100, speed = -diff)
-        debug_print(self.gs.value())
+        #debug_print(self.gs.value())
         self.steer_pair.off()
 
-    def turnRight_Gyro(self, degree=89):
+    def turn_right(self, degree=89):
+        debug_print("[INFO] Turn right ...")
         angle = self.gs.value() + degree
         while self.gs.value() < angle:
             diff = angle - self.gs.value()
             self.steer_pair.on(100, speed = -diff)
-        debug_print(self.gs.value())
+        #debug_print(self.gs.value())
         self.steer_pair.off()
 
 
