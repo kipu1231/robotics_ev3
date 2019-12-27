@@ -70,9 +70,12 @@ def main():
     time.sleep(1)
 
     drive = drive_gyro.Drive_gyro()
-    drive.turnRight_Gyro()
-    #drive.turnLeft_Gyro()
-    drive.driveGyro()
+    for i in range(8):
+        drive.turnRight_Gyro()
+    for i in range(8):
+        drive.turnLeft_Gyro()    
+    # drive.turnLeft_Gyro()
+    # drive.driveGyro()
     #robot = drive.DiffRobot()
     #shovel = moveShovel.Shovel()
     #print(robot.motors)

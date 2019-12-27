@@ -13,15 +13,15 @@ def debug_print(*args, **kwargs):
 
 class Drive_gyro(object):
     """docstring for DiffRobot"""
-    def __init__(self, r_address=OUTPUT_A, l_address=OUTPUT_B):
+    def __init__(self, diam=56, width=28, r_address=OUTPUT_A, l_address=OUTPUT_B):
         super(Drive_gyro, self).__init__()
-        #self.motors = LargeMotor(r_address)
+        self.motors = [LargeMotor(address) for address in (r_address, l_address)]
         self.tank_pair = MoveTank(r_address, l_address)
         self.steer_pair = MoveSteering(r_address, l_address)
         self.gs = GyroSensor()
+        self.gs.mode = 'GYRO-RATE'
         self.gs.mode = 'GYRO-ANG'
-        self.gs.reset()
-       
+        # self.gs.reset()
     
     def driveGyro(self):
         self.gs.reset()
@@ -31,27 +31,46 @@ class Drive_gyro(object):
             # if angle >=-100 and angle<=100:
             #     self.steer_pair.on_for_rotations(angle, speed=30, rotations=10)
             #     self.steer_pair.off()
-            sleep(4)
-        
-    def turnLeft_Gyro(self):
-        self.gs.reset()
-        while self.gs.value()<=85:
-            self.tank_pair.on(left_speed=0, right_speed=30)
-            debug_print(self.gs.value())
-        self.tank_pair.off() #try without this!!!?
+            sleep(2)
 
-    def turnRight_Gyro(self):
-        self.gs.reset()
-        while True:
-            debug_print(self.gs.value())
-            sleep(1)
-        while self.gs.value()<=85:
-            angle =self.gs.value()
-            diff = 90-angle
-            debug_print(angle)
-            self.steer_pair.on(-100, speed=30)
-        self.steer_pair.off() #try without this!!!?        
+    def go_forward(self, distance=None, dc=60):
+        print("[INFO] Moving forward...")
+        debug_print("[INFO] Moving forward...")
         
+        if distance != None:
+            turns = distance/(self.diam * PI)
+            for m in self.motors:
+                m.duty_cycle_sp = dc
+                m.position_sp = turns*360
+                m.run_to_rel_pos()
+            while 'running' in self.motors[0].state: 
+                
+                sleep(0.01)
+        else: 
+            for m in self.motors:
+                m.duty_cycle_sp = dc
+                m.run_direct()
+        
+    def turnLeft_Gyro(self,degree=90):
+        angle = self.gs.value() - degree
+        while self.gs.value() > angle:
+            diff = self.gs.value() - angle
+            self.steer_pair.on(-100, speed = -diff)
+        debug_print(self.gs.value())
+        self.steer_pair.off()
+
+    def turnRight_Gyro(self, degree=90):
+        angle = self.gs.value() + degree
+        while self.gs.value() < angle:
+            diff = angle - self.gs.value()
+            self.steer_pair.on(100, speed = -diff)
+        debug_print(self.gs.value())
+        self.steer_pair.off()
+
+
+
+
+
         #self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)
         #sleep(1)
         #self.motors.on_for_degrees(speed=20, degrees=120, brake=True, block=True)
@@ -64,13 +83,9 @@ class Drive_gyro(object):
         #self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)
         #sleep(1)
         #self.motors.on_for_degrees(speed=20, degrees=120, brake=True, block=True)
-       
-       
-       #i = 3
 
-        #while i > 0:
-            
-       
+       #i = 3
+        #while i > 0:       
         #i = i-1
     
 if __name__ == '__main__':
