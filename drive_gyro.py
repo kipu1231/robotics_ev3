@@ -5,6 +5,10 @@ from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from time import sleep
 PI = 3.141592653589793
 
+def debug_print(*args, **kwargs):
+    '''Print debug messages to stderr. This shows up in the output panel in VS Code.
+    '''
+    print(*args, **kwargs, file=sys.stderr)
 
 class Drive_gyro(object):
     """docstring for DiffRobot"""
@@ -19,9 +23,10 @@ class Drive_gyro(object):
     def driveGyro(self):
         while True:
             angle = self.gs.value()
-            if angle >=-100 and angle<=100:
-                self.steer_pair.on_for_rotations(angle, speed=30, rotations=10)
-                self.steer_pair.off()
+            debug_print(angle)
+            # if angle >=-100 and angle<=100:
+            #     self.steer_pair.on_for_rotations(angle, speed=30, rotations=10)
+            #     self.steer_pair.off()
             sleep(4)
         #self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)
         #sleep(1)
@@ -44,3 +49,6 @@ class Drive_gyro(object):
        
         #i = i-1
     
+if __name__ == '__main__':
+    gyro = Drive_gyro()
+    gyro.driveGyro()

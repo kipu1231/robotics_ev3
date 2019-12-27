@@ -65,7 +65,7 @@ def random_matrix(no_rows, no_cols, no_obs):
     matrix = []
     count = 0
     for i in range(no_rows):
-      trix.append(row)
+      matrix.append(row)
     return matrix, start_position
 
 def fixed_matrix(no_rows, no_cols, no_obs):
