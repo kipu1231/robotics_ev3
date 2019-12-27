@@ -123,6 +123,8 @@ def main():
         # initialise robot
         #diffRobot = DiffRobot()
         shovel = moveShovel.Shovel()
+        music = playMusic.Music()
+        music.playMusic()
         diffRobot = drive_gyro.Drive_gyro(shovel)
         # run with dfs
         robot = Robot(matrix, start_position, start_direction, diffRobot, shovel)
@@ -175,7 +177,8 @@ def main():
 
     print('Planned BFS: average steps taken: %d, turns taken: %d, time taken: %.2fms'
          % (int(total_steps_bfs / no_matrix), int(total_turns_bfs / no_matrix), total_elapsed_bfs * 1000 / no_matrix))
-
+    music.playMusic()
+    
 if __name__ == '__main__':
     # set the console just how we want it
     reset_console()
