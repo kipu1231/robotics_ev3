@@ -3,7 +3,7 @@ from time import sleep
 
 class Robot(object):
 
-    def __init__(self, matrix, start_position, start_direction, DiffRobot):
+    def __init__(self, matrix, start_position, start_direction, DiffRobot, Shovel):
         self.matrix = matrix
         self.current_position = {'x': start_position['x'], 'y': start_position['y']}
         self.current_direction = start_direction
@@ -12,13 +12,15 @@ class Robot(object):
         self.turn_count = 0
         self.loggable = False
         self.diffrobot = DiffRobot
+        self.shovel = Shovel
 
     def turn_left(self):
         """turn 90 degree counter-clockwise"""
         ###### add the connection to EV3 here!!
         self.current_direction = (self.current_direction + 1) % 4
         self.turn_count += 1
-        self.diffrobot.turn_left(angle=530, dc=100)
+        self.diffrobot.turn_left(angle=650, dc=100)
+        self.shovel.moveShovel()
         #sleep(3)
         return self
 
@@ -26,7 +28,8 @@ class Robot(object):
         """turn 90 degree clockwise"""
         self.current_direction = (self.current_direction + 3) % 4
         self.turn_count += 1
-        self.diffrobot.turn_right(angle=530, dc=100)
+        self.diffrobot.turn_right(angle=650, dc=100)
+        self.shovel.moveShovel()
         #sleep(3)
         return self
 
@@ -42,6 +45,7 @@ class Robot(object):
         self.current_position['y'] = next_pos_y
         self.__visited_position[str(next_pos_x) + "_" + str(next_pos_y)] = 1
         self.diffrobot.go_forward(distance=200, dc=100)
+        self.shovel.moveShovel()
         #sleep(3)
         if self.loggable:
             self.log()

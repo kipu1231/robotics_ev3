@@ -122,44 +122,49 @@ def main():
         debug_print("[INFO] Initialising Robot and Sweeper...")
         # initialise robot
         diffRobot = DiffRobot()
+        shovel = moveShovel.Shovel()
         # run with dfs
-        #robot = Robot(matrix, start_position, start_direction, diffRobot)
-        #robot.log()
+        robot = Robot(matrix, start_position, start_direction, diffRobot, shovel)
+        robot.log()
         #sweeper = DFSSweeper(robot)
-        #sweeper.loggable = False
-        #robot.loggable = True
-
-        #print("[INFO] Starting DFS sweep...")
-        #debug_print("[INFO] Starting DFS sweep...")
-        #start = time.time()
-        #sweeper.sweep()
-        #elapsed = time.time() - start
-        #print("[INFO] Finished DFS sweep...")
-        #debug_print("[INFO] Finished DFS sweep...")
-
-        #total_elapsed_dfs += elapsed
-        #total_steps_dfs += robot.move_count
-        #total_turns_dfs += robot.turn_count
-
-        #print('steps taken by dfs: %d, turns taken: %d, time taken: %.2fms'
-        #      % (robot.move_count, robot.turn_count, elapsed * 1000))
-
-        # run with bfs
-        robot = Robot(matrix, start_position, start_direction, diffRobot)
         sweeper = Sweeper(robot)
         sweeper.loggable = False
         robot.loggable = True
 
+        print("[INFO] Starting DFS sweep...")
+        debug_print("[INFO] Starting DFS sweep...")
         start = time.time()
         sweeper.sweep()
         elapsed = time.time() - start
+        print("[INFO] Finished DFS sweep...")
+        debug_print("[INFO] Finished DFS sweep...")
 
-        total_elapsed_bfs += elapsed
-        total_steps_bfs += robot.move_count
-        total_turns_bfs += robot.turn_count
+        total_elapsed_dfs += elapsed
+        total_steps_dfs += robot.move_count
+        total_turns_dfs += robot.turn_count
 
-        print('steps taken by planned bfs: %d, turns taken: %d, time taken: %.2fms'
+        print('steps taken by dfs: %d, turns taken: %d, time taken: %.2fms'
               % (robot.move_count, robot.turn_count, elapsed * 1000))
+
+        # run with bfs
+        #print("[INFO] Starting BFS sweep...")
+        #debug_print("[INFO] Starting BFS sweep...")
+        
+        #robot = Robot(matrix, start_position, start_direction, diffRobot)
+        #sweeper = Sweeper(robot)
+        #sweeper.loggable = False
+        #robot.loggable = True
+
+        #start = time.time()
+        #sweeper.sweep()
+        #elapsed = time.time() - start
+
+        #total_elapsed_bfs += elapsed
+        #total_steps_bfs += robot.move_count
+        #total_turns_bfs += robot.turn_count
+
+        #print('steps taken by planned bfs: %d, turns taken: %d, time taken: %.2fms'
+        #      % (robot.move_count, robot.turn_count, elapsed * 1000))
 
         # sweeper.print_map()
         # robot.log()

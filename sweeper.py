@@ -1,4 +1,6 @@
 from utils import sin, cos, bfs, print_observed_map
+import os
+import sys
 
 class Sweeper(object):
     def __init__(self, robot):

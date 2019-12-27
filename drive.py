@@ -99,7 +99,7 @@ class DiffRobot(object):
         debug_print("[INFO] Turn left...")
         
         if angle != None:
-
+            debug_print("Jumps in here")
             turns_per_spin = self.width/self.diam
             turns = (angle/360.0) * turns_per_spin
 
@@ -108,6 +108,7 @@ class DiffRobot(object):
                 #self.steer_pair.on_for_rotations(0,speed=60,rotations=turns)
                 m.position_sp = turns*360
                 m.run_to_rel_pos()
+                m.run_to_rel_pos(position_sp = turns*360, speed_sp=200)
                 dc = -dc
                 turns = -turns
             while 'running' in self.motors[0].state: sleep(0.01)
