@@ -2,6 +2,11 @@ from utils import sin, cos, bfs, print_observed_map
 import os
 import sys
 
+def debug_print(*args, **kwargs):
+    '''Print debug messages to stderr. This shows up in the output panel in VS Code.
+    '''
+    print(*args, **kwargs, file=sys.stderr)
+
 class Sweeper(object):
     def __init__(self, robot):
         self.current_direction = 0 # can be from 0 to 3, mapped to 0-270 degrees
@@ -10,6 +15,7 @@ class Sweeper(object):
         self.robot = robot
         self.loggable = True
         self.spiral = True
+        self.turns = 0
 
     def sweep(self):
         while self.move():
@@ -46,14 +52,22 @@ class Sweeper(object):
         for path in reversed(target_path):
             left_turns = path - self.current_direction
             if left_turns < 0:
+                debug_print('moves forward')
                 left_turns += 4
             # we don't need this, but in reality turning is costly
             # so instead of turning left 3 times, we'll turn right 1 time
             if left_turns == 3:
                 self.turn_robot_right()
+                self.turns = self.turns - 1
+                if self.robot.potential_move():
+                    self.robot.turn_rob_left(self.turns)
             else:
                 for _ in range(left_turns):
                     self.turn_robot_left()
+                    self.turns = self.turns + 1
+                if self.robot.potential_move():
+                    debug_print('move left')
+                    self.robot.turn_rob_left(self.turns)
             self.move_robot()
 
     def move_robot(self):
@@ -63,6 +77,7 @@ class Sweeper(object):
             self.observed_map[next_pos['y']] = {}
 
         if self.robot.move():
+            self.turns = 0
             # mark the point as visited
             self.observed_map[next_pos['y']][next_pos['x']] = 1
             self.current_position = next_pos

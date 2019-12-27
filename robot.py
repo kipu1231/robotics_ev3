@@ -13,6 +13,23 @@ class Robot(object):
         self.loggable = False
         self.diffrobot = DiffRobot
         self.shovel = Shovel
+    
+    def turn_rob_left(self, turns):
+        """turn 90 degree counter-clockwise"""
+        print(turns)
+        if turns < 0:
+            turns  = turns * (-1)
+            for i in range(turns):
+                self.diffrobot.turn_right()
+        elif turns > 0:
+            for i in range(turns):
+                self.diffrobot.turn_left()
+        return self
+
+    def turn_rob_right(self):
+        """turn 90 degree clockwise"""
+        self.diffrobot.turn_right()
+        return self
 
     def turn_left(self):
         """turn 90 degree counter-clockwise"""
@@ -20,7 +37,7 @@ class Robot(object):
         self.current_direction = (self.current_direction + 1) % 4
         self.turn_count += 1
         #self.diffrobot.turn_left(angle=650, dc=100)
-        self.diffrobot.turn_left()
+        #self.diffrobot.turn_left()
         #self.shovel.moveShovel()
         #sleep(3)
         return self
@@ -30,10 +47,19 @@ class Robot(object):
         self.current_direction = (self.current_direction + 3) % 4
         self.turn_count += 1
         #self.diffrobot.turn_right(angle=650, dc=100)
-        self.diffrobot.turn_right()
+        #self.diffrobot.turn_right()
         #self.shovel.moveShovel()
         #sleep(3)
         return self
+    
+    def potential_move(self):
+        """move ahead"""
+        next_pos_x = self.current_position['x'] + cos(self.current_direction)
+        next_pos_y = self.current_position['y'] - sin(self.current_direction)
+        if not self.__can_move(next_pos_x, next_pos_y):
+            self.__visited_position[str(next_pos_x) + "_" + str(next_pos_y)] = -1
+            return False
+        return True
 
     def move(self):
         """move ahead"""
