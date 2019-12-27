@@ -32,7 +32,7 @@ class Sweeper(object):
         return True
 
     def find_nearest_unvisited_pos(self):
-        return bfs(self.current_position, self.current_direction, self.node_unvisited, self.adjacent_movable, self.spiral)
+        return bfs(self.robot,self.current_position, self.current_direction, self.node_unvisited, self.adjacent_movable, self.spiral)
 
     def node_unvisited(self, node):
         map_node = self.get_node_from_map(node)
@@ -49,7 +49,9 @@ class Sweeper(object):
         return self.observed_map[node['y']][node['x']]
 
     def move_with_path(self, target_path):
+        debug_print("TargetPath: {}".format(target_path))
         for path in reversed(target_path):
+            debug_print("Path: {}".format(path))
             left_turns = path - self.current_direction
             if left_turns < 0:
                 debug_print('moves forward')

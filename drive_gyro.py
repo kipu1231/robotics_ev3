@@ -32,10 +32,10 @@ class Drive_gyro(object):
         debug_print("[INFO] Moving forward...")
         self.shovel.moveShovel_Down()
         angle = self.gs.value()
-        debug_print(angle)
+        # debug_print(angle)
         if distance != None:
             turns = distance/(self.diam * PI)
-            debug_print(turns)
+            # debug_print(turns)
             now = time.time()
             future = now + 1.3
             while time.time() < future:

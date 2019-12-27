@@ -1,3 +1,10 @@
+import sys
+
+def debug_print(*args, **kwargs):
+    '''Print debug messages to stderr. This shows up in the output panel in VS Code.
+    '''
+    print(*args, **kwargs, file=sys.stderr)
+
 def cos(direction):
     """naive implementation of cos"""
     return int(abs(2 - direction) - 1)
@@ -27,10 +34,10 @@ def print_observed_map(sweeper):
                 text += '*'
             else:
                 text += '|'
-        print(text)
-    print('')
+        debug_print(text)
+    debug_print('')
 
-def bfs(start_position, start_direction, finish_check_fn, adjacent_check_fn, spiral):
+def bfs(robot,start_position, start_direction, finish_check_fn, adjacent_check_fn, spiral):
     # this is just simple BFS implementation
     checked = {}
     queue = []
@@ -38,6 +45,10 @@ def bfs(start_position, start_direction, finish_check_fn, adjacent_check_fn, spi
 
     while queue:
         current = queue.pop(0)
+
+        if robot.__can_move(current['x'],current['y]']):
+            continue
+
         if current['direction'] is not None:
             start_direction = current['direction']
         finished = finish_check_fn(current)
