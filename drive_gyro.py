@@ -3,6 +3,7 @@
 from ev3dev2.auto import LargeMotor,MoveSteering, MoveTank, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, GyroSensor
 from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from time import sleep
+import sys
 PI = 3.141592653589793
 
 def debug_print(*args, **kwargs):
@@ -15,12 +16,15 @@ class Drive_gyro(object):
     def __init__(self, r_address=OUTPUT_A, l_address=OUTPUT_B):
         super(Drive_gyro, self).__init__()
         #self.motors = LargeMotor(r_address)
-        #self.tank_pair = MoveTank(r_address, l_address)
+        self.tank_pair = MoveTank(r_address, l_address)
         self.steer_pair = MoveSteering(r_address, l_address)
         self.gs = GyroSensor()
+        self.gs.mode = 'GYRO-ANG'
+        self.gs.reset()
        
     
     def driveGyro(self):
+        self.gs.reset()
         while True:
             angle = self.gs.value()
             debug_print(angle)
@@ -28,6 +32,26 @@ class Drive_gyro(object):
             #     self.steer_pair.on_for_rotations(angle, speed=30, rotations=10)
             #     self.steer_pair.off()
             sleep(4)
+        
+    def turnLeft_Gyro(self):
+        self.gs.reset()
+        while self.gs.value()<=85:
+            self.tank_pair.on(left_speed=0, right_speed=30)
+            debug_print(self.gs.value())
+        self.tank_pair.off() #try without this!!!?
+
+    def turnRight_Gyro(self):
+        self.gs.reset()
+        while True:
+            debug_print(self.gs.value())
+            sleep(1)
+        while self.gs.value()<=85:
+            angle =self.gs.value()
+            diff = 90-angle
+            debug_print(angle)
+            self.steer_pair.on(-100, speed=30)
+        self.steer_pair.off() #try without this!!!?        
+        
         #self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)
         #sleep(1)
         #self.motors.on_for_degrees(speed=20, degrees=120, brake=True, block=True)

@@ -11,6 +11,7 @@ import playMusic
 from ev3dev2.motor import LargeMotor, OUTPUT_C
 from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from threading import Thread
+import drive_gyro
 # from ev3dev2.motor import LargeMotor, OUTPUT_D, OUTPUT_B, SpeedPercent, MoveTank
 
 # state constants
@@ -68,13 +69,17 @@ def main():
     # exits
     time.sleep(1)
 
-    robot = drive.DiffRobot()
-    shovel = moveShovel.Shovel()
+    drive = drive_gyro.Drive_gyro()
+    drive.turnRight_Gyro()
+    #drive.turnLeft_Gyro()
+    drive.driveGyro()
+    #robot = drive.DiffRobot()
+    #shovel = moveShovel.Shovel()
     #print(robot.motors)
-    while True:
-      robot.go_forward()
-      shovel.moveShovel()
-      time.sleep(5)
+    #while True:
+     # robot.go_forward()
+      #shovel.moveShovel()
+      #time.sleep(5)
 
   
       
@@ -126,8 +131,8 @@ def main():
          
 
     # Stop the motors before exiting.
-    for m in robot.motors:
-        m.stop()
+    #for m in robot.motors:
+    #   m.stop()
     
            
 
