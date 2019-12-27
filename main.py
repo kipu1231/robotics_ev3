@@ -94,11 +94,45 @@ def fixed_matrix(no_rows, no_cols, no_obs):
         matrix.append(row)
     return matrix, start_position
 
+def custom_map(no_rows, no_cols, no_obs):
+    arr = []
+    for i in range(no_rows * no_cols):
+        if i < 0:
+            arr.append(1)
+        else:
+            arr.append(0)
+
+    #define position of obstacles
+    #main demo
+    #arr[5] = 1
+    #arr[16] = 1
+    #arr[18] = 1
+
+    arr[20] = 1
+    arr[21] = 1
+    arr[22] = 1
+
+    start_position = {'x': 0, 'y': 0}
+    rand_pos = 3
+
+    matrix = []
+    count = 0
+    for i in range(no_rows):
+        row = []
+        for j in range(no_cols):
+            row.append(arr[i * no_cols + j])
+            if arr[j] == 0:
+                if count == rand_pos:
+                    start_position = {'x': j, 'y': i}
+                count += 1
+        matrix.append(row)
+    return matrix, start_position
+
 
 def main():
     no_rows = 5
     no_cols = 5
-    no_obs = 2
+    no_obs = 3
     no_matrix = 1
 
     total_elapsed_bfs = 0
@@ -115,7 +149,8 @@ def main():
         #matrix, start_position = random_matrix(no_rows, no_cols, no_obs)
         print("[INFO] Initialising Matrix...")
         debug_print("[INFO] Initialising Matrix...")
-        matrix, start_position = fixed_matrix(no_rows, no_cols, no_obs)
+        #matrix, start_position = fixed_matrix(no_rows, no_cols, no_obs)
+        matrix, start_position = custom_map(no_rows, no_cols, no_obs)
         start_direction = random.Random(4).randint(0, 3)
 
         print("[INFO] Initialising Robot and Sweeper...")

@@ -28,7 +28,7 @@ class Drive_gyro(object):
         self.shovel = shovel
         # self.gs.reset()
     
-    def driveGyro(self,distance=None, dc=40):
+    def driveGyro(self,distance=None, dc=45):
         debug_print("[INFO] Moving forward...")
         self.shovel.moveShovel_Down()
         angle = self.gs.value()
@@ -37,7 +37,7 @@ class Drive_gyro(object):
             turns = distance/(self.diam * PI)
             debug_print(turns)
             now = time.time()
-            future = now + 2
+            future = now + 1.3
             while time.time() < future:
                 angle2 = self.gs.value()
                 angle_drive = angle2-angle
@@ -45,7 +45,7 @@ class Drive_gyro(object):
             self.steer_pair.off()
             
 
-    def go_forward(self, distance=None, dc=60):
+    def go_forward(self, distance=None, dc=45):
         print("[INFO] Moving forward...")
         debug_print("[INFO] Moving forward...")
         
