@@ -51,6 +51,7 @@ class Drive_gyro(object):
                 m.duty_cycle_sp = dc
                 m.position_sp = turns*360
                 m.run_to_rel_pos()
+                m.run_to_rel_pos(position_sp = turns*360, speed_sp=200)
             while 'running' in self.motors[0].state: 
                 
                 sleep(0.01)
