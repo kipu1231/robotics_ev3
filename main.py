@@ -122,8 +122,8 @@ def main():
         debug_print("[INFO] Initialising Robot and Sweeper...")
         # initialise robot
         #diffRobot = DiffRobot()
-        diffRobot = drive_gyro.Drive_gyro()
         shovel = moveShovel.Shovel()
+        diffRobot = drive_gyro.Drive_gyro(shovel)
         # run with dfs
         robot = Robot(matrix, start_position, start_direction, diffRobot, shovel)
         robot.log()

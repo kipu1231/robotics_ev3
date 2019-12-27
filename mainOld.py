@@ -68,13 +68,21 @@ def main():
     # wait a bit so you have time to look at the display before the program
     # exits
     time.sleep(1)
+    motors = LargeMotor(OUTPUT_C)
+    #motors.position_sp = 20
+    motors.run_to_abs_pos(position_sp = 20)
+    #while True:
+     #   debug_print(motors.position_sp)
+     # sleep(1)
+     #  motors.run_to_abs_pos(20,50)
 
-    drive = drive_gyro.Drive_gyro()
+    #motors.run_to_abs_pos()
+    #drive = drive_gyro.Drive_gyro()
 
 
-    for i in range(8):
-        drive.driveGyro(10)
-        drive.turnRight_Gyro()
+   # for i in range(8):
+        #drive.driveGyro(10)
+        #drive.turnRight_Gyro()
     # for i in range(8):
     #     drive.turnLeft_Gyro()    
     # drive.turnLeft_Gyro()
@@ -145,7 +153,7 @@ def main():
     #debug_print('Test')
     
 
-    time.sleep(5) 
+    #time.sleep(5) 
 
 
 if __name__ == '__main__':

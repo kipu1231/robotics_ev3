@@ -5,6 +5,7 @@ from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from time import sleep
 import time
 import sys
+import moveShovel 
 PI = 3.141592653589793
 
 def debug_print(*args, **kwargs):
@@ -14,7 +15,7 @@ def debug_print(*args, **kwargs):
 
 class Drive_gyro(object):
     """docstring for DiffRobot"""
-    def __init__(self, diam=56, width=28, r_address=OUTPUT_A, l_address=OUTPUT_B):
+    def __init__(self, shovel, diam=56, width=28, r_address=OUTPUT_A, l_address=OUTPUT_B):
         super(Drive_gyro, self).__init__()
         self.diam = diam
         self.width = width
@@ -24,10 +25,12 @@ class Drive_gyro(object):
         self.gs = GyroSensor()
         self.gs.mode = 'GYRO-RATE'
         self.gs.mode = 'GYRO-ANG'
+        self.shovel = shovel
         # self.gs.reset()
     
     def driveGyro(self,distance=None, dc=40):
         debug_print("[INFO] Moving forward...")
+        self.shovel.moveShovel_Down()
         angle = self.gs.value()
         debug_print(angle)
         if distance != None:
@@ -63,6 +66,7 @@ class Drive_gyro(object):
         
     def turn_left(self,degree=89):
         debug_print("[INFO] Turn left ...")
+        self.shovel.moveShovel_Up()
         angle = self.gs.value() - degree
         while self.gs.value() > angle:
             diff = self.gs.value() - angle
@@ -72,6 +76,7 @@ class Drive_gyro(object):
 
     def turn_right(self, degree=89):
         debug_print("[INFO] Turn right ...")
+        self.shovel.moveShovel_Up()
         angle = self.gs.value() + degree
         while self.gs.value() < angle:
             diff = angle - self.gs.value()

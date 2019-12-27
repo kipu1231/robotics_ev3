@@ -11,6 +11,7 @@ class Shovel(object):
     def __init__(self, r_address=OUTPUT_C):
         super(Shovel, self).__init__()
         self.motors = LargeMotor(r_address)
+        self.shovel_up = 0
        
     
     def moveShovel(self):
@@ -19,7 +20,18 @@ class Shovel(object):
         self.motors.on_for_degrees(speed=70, degrees=-100, brake=True, block=True)
         sleep(1)
         self.motors.on_for_degrees(speed=20, degrees=120, brake=True, block=True)
-
+    
+    def moveShovel_Up(self):
+        if self.shovel_up == 0:
+            self.motors.on_for_degrees(speed=80, degrees=-120, brake=True, block=True)
+            self.shovel_up = 1
+            sleep(0.5)
+    
+    def moveShovel_Down(self):
+        if self.shovel_up == 1:
+            self.motors.on_for_degrees(speed=50, degrees=120, brake=True, block=True)
+            self.shovel_up = 0
+            sleep(0.5)
         #self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)
         #sleep(1)
         #self.motors.on_for_degrees(speed=20, degrees=120, brake=True, block=True)
