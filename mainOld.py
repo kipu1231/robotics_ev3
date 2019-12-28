@@ -77,7 +77,9 @@ def main():
      #  motors.run_to_abs_pos(20,50)
 
     #motors.run_to_abs_pos()
-    #drive = drive_gyro.Drive_gyro()
+    shovel = moveShovel.Shovel()
+    drive = drive_gyro.Drive_gyro(shovel)
+    drive.test()
 
 
    # for i in range(8):

@@ -158,7 +158,7 @@ def main():
         # initialise robot
         shovel = moveShovel.Shovel()
         music = playMusic.Music()
-        music.playMusic()
+        # music.playMusic()
         diffRobot = drive_gyro.Drive_gyro(shovel)
         # run with dfs
         algo = "bfs"

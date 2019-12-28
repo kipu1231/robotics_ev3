@@ -15,10 +15,9 @@ class Shovel(object):
        
     
     def moveShovel(self):
+        self.motors.on_for_degrees(speed=10, degrees=-40, brake=True, block=True)
         sleep(1)
-        self.motors.on_for_degrees(speed=10, degrees=-30, brake=True, block=True)
-        sleep(1)
-        self.motors.on_for_degrees(speed=80, degrees=-110, brake=True, block=True)
+        self.motors.on_for_degrees(speed=80, degrees=-100, brake=True, block=True)
         sleep(1)
         self.motors.on_for_degrees(speed=20, degrees=140, brake=True, block=True)
     

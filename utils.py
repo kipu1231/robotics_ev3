@@ -46,8 +46,8 @@ def bfs(robot,start_position, start_direction, finish_check_fn, adjacent_check_f
     while queue:
         current = queue.pop(0)
 
-        if robot.__can_move(current['x'],current['y]']):
-            continue
+        # if robot.__can_move(current['x'],current['y]']):
+        #     continue
 
         if current['direction'] is not None:
             start_direction = current['direction']
