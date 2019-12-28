@@ -44,7 +44,6 @@ class Drive_gyro(object):
                 self.steer_pair.on(angle_drive, speed=dc)
             self.steer_pair.off()
             
-
     def go_forward(self, distance=None, dc=45):
         print("[INFO] Moving forward...")
         debug_print("[INFO] Moving forward...")

@@ -156,16 +156,20 @@ def main():
         print("[INFO] Initialising Robot and Sweeper...")
         debug_print("[INFO] Initialising Robot and Sweeper...")
         # initialise robot
-        #diffRobot = DiffRobot()
         shovel = moveShovel.Shovel()
         music = playMusic.Music()
         music.playMusic()
         diffRobot = drive_gyro.Drive_gyro(shovel)
         # run with dfs
-        robot = Robot(matrix, start_position, start_direction, diffRobot, shovel)
+        algo = "bfs"
+        #algo = "dfs"
+
+        robot = Robot(matrix, start_position, start_direction, diffRobot, shovel, algo)
         robot.log()
+
         #sweeper = DFSSweeper(robot)
         sweeper = Sweeper(robot)
+
         sweeper.loggable = False
         robot.loggable = True
 
