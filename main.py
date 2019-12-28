@@ -146,9 +146,11 @@ def main():
     for i in range(no_matrix):
         ''' Initialize Matrix, robot and start position '''
         ############ HERE Add initialization of EV3
-        #matrix, start_position = random_matrix(no_rows, no_cols, no_obs)
+       
+
         print("[INFO] Initialising Matrix...")
         debug_print("[INFO] Initialising Matrix...")
+         #matrix, start_position = random_matrix(no_rows, no_cols, no_obs)
         #matrix, start_position = fixed_matrix(no_rows, no_cols, no_obs)
         matrix, start_position = custom_map(no_rows, no_cols, no_obs)
         start_direction = random.Random(4).randint(0, 3)
@@ -158,11 +160,13 @@ def main():
         # initialise robot
         shovel = moveShovel.Shovel()
         music = playMusic.Music()
-        # music.playMusic()
+        music.playMusic()
         diffRobot = drive_gyro.Drive_gyro(shovel)
-        # run with dfs
-        algo = "bfs"
+
+        print("[INFO] Initialising the respective Algorithm...")
+        debug_print("[INFO] Initialising the respective Algorithm...")
         #algo = "dfs"
+        algo = "bfs"
 
         robot = Robot(matrix, start_position, start_direction, diffRobot, shovel, algo)
         robot.log()
@@ -175,11 +179,73 @@ def main():
 
         print("[INFO] Starting DFS sweep...")
         debug_print("[INFO] Starting DFS sweep...")
+
         start = time.time()
         sweeper.sweep()
         elapsed = time.time() - start
+
         print("[INFO] Finished DFS sweep...")
         debug_print("[INFO] Finished DFS sweep...")
+
+        print("[INFO] Move to home position...")
+        debug_print("[INFO] Move to home position...")
+
+        x_move = start_position['x']-sweeper.current_position['x']
+        y_move = start_position['y'] - sweeper.current_position['y']
+
+        'move robot to correct x position'
+        debug_print('move robot to x position')
+        if x_move > 0:
+            left_turns = 0 - sweeper.current_direction
+            current = 0
+        elif x_move < 0:
+            left_turns = 2 - sweeper.current_direction
+            current = 2
+
+         if left_turns < 0:
+            left_turns += 4
+            debug_print('keine drehung notwendig')
+        if left_turns == 3:
+            debug_print('roboter dreht sich einmal nach rechts')
+            #bewege roboter 1x nach rechts
+            #diffrobot.turn_right()
+        else:
+            for i in range(left_turns):
+                debug_print('roboter nach links')
+                #bewege roboter entsprechend oft nach links
+                #diffrobot.turn_left()
+
+        debug_print('so viele schritte macht der roboter')
+        for steps in range(abs(x_move)):
+            debug_print(steps)
+            #bewege den roboter jeweils eins nach vorne
+            #diffrobot.driveGyro(10)
+
+        'move robot to correct y position'
+        debug_print('move robot zu y position')
+        if y_move > 0:
+            left_turns = 3 - current
+        elif y_move < 0:
+            left_turns = 1 - current
+
+        if left_turns < 0:
+            left_turns += 4
+            debug_print('keine drehung notwendig')
+        if left_turns == 3:
+            debug_print('bewege einmal nach links')
+            # bewege roboter 1x nach rechts
+            #diffrobot.turn_right()
+        else:
+            for i in range(left_turns):
+                debug_print('bewege roboter nach links')
+                # bewege roboter entsprechend oft nach links
+                #diffrobot.turn_left()
+
+        print('so viele schritte macht der roboter')
+        for steps in range(abs(y_move)):
+            debug_print(steps)
+            #bewege den roboter jeweils eins nach vorne
+            #diffrobot.driveGyro(10)
 
         total_elapsed_dfs += elapsed
         total_steps_dfs += robot.move_count
