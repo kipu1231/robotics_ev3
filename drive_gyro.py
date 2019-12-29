@@ -7,7 +7,7 @@ import time
 import sys
 import moveShovel 
 PI = 3.141592653589793
-THRESHOLD = 200
+THRESHOLD = 250
 
 def debug_print(*args, **kwargs):
     '''Print debug messages to stderr. This shows up in the output panel in VS Code.
@@ -39,15 +39,15 @@ class Drive_gyro(object):
         angle = self.gs.value()
         # debug_print(angle)
         if distance != None:
-            turns = distance/(self  .diam * PI)
+            turns = distance/(self.diam * PI)
             # debug_print(turns)
             now = time.time()
-            future = now + 2.09
+            future = now + 2.05
             while time.time() < future:
                 angle2 = self.gs.value()
-                # distance = self.ultrasonic_sensor.value()
-                # if distance < THRESHOLD:
-                #     break
+                distance = self.ultrasonic_sensor.value()
+                if distance < THRESHOLD:
+                    break
                 angle_drive = angle2-angle
                 self.steer_pair.on(angle_drive, speed=dc)
             self.steer_pair.off()
@@ -60,7 +60,7 @@ class Drive_gyro(object):
         while self.gs.value() > self.current_angle:
             diff = self.gs.value() - self.current_angle
             self.steer_pair.on(-100, speed = -diff*0.8)
-        #debug_print(self.gs.value())
+        debug_print(self.gs.value())
         self.steer_pair.off()
 
     def turn_right(self, degree=90):
@@ -70,7 +70,7 @@ class Drive_gyro(object):
         while self.gs.value() < self.current_angle:
             diff = self.current_angle - self.gs.value()
             self.steer_pair.on(100, speed = -diff*0.8)
-        #debug_print(self.gs.value())
+        debug_print(self.gs.value())
         self.steer_pair.off()
 
 

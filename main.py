@@ -105,12 +105,8 @@ def custom_map(no_rows, no_cols, no_obs):
     #define position of obstacles
     #main demo
     arr[6] = 1
-    arr[11] = 1
+    arr[12] = 1
     #arr[18] = 1
-
-    #arr[20] = 1
-    #arr[21] = 1
-    #arr[22] = 1
 
     start_position = {'x': 0, 'y': 0}
     rand_pos = 8
@@ -121,10 +117,10 @@ def custom_map(no_rows, no_cols, no_obs):
         row = []
         for j in range(no_cols):
             row.append(arr[i * no_cols + j])
-            if arr[j] == 0:
-                if count == rand_pos:
-                    start_position = {'x': j, 'y': i}
-                count += 1
+            # if arr[i * no_cols + j] == 0:
+            if count == rand_pos:
+                start_position = {'x': j, 'y': i}
+            count += 1
         matrix.append(row)
     return matrix, start_position
 
