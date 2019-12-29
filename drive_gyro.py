@@ -27,6 +27,7 @@ class Drive_gyro(object):
         self.gs.mode = 'GYRO-RATE'
         self.gs.mode = 'GYRO-ANG'
         self.shovel = shovel
+        self.current_angle = self.gs.value()
         ultrasonic_sensor = UltrasonicSensor()
         ultrasonic_sensor.mode = 'US-DIST-CM'
         self.ultrasonic_sensor = ultrasonic_sensor
@@ -35,7 +36,7 @@ class Drive_gyro(object):
     def driveGyro(self,distance=None, dc=40, target=None):
         debug_print("[INFO] Moving forward...")
         self.shovel.moveShovel_Down()
-        angle = self.gs.value()
+        angle = self.current_angle
         # debug_print(angle)
         if distance != None:
             turns = distance/(self.diam * PI)
@@ -74,10 +75,7 @@ class Drive_gyro(object):
 
 
     def test(self):
-        while True:
-            distance = self.ultrasonic_sensor.value()
-            debug_print(distance)
-            sleep(3)
+        self.driveGyro(10)
 
             # def go_forward(self, distance=None, dc=60):
     #     print("[INFO] Moving forward...")

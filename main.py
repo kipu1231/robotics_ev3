@@ -105,7 +105,7 @@ def custom_map(no_rows, no_cols, no_obs):
     #define position of obstacles
     #main demo
     arr[6] = 1
-    arr[12] = 1
+    arr[13] = 1
     #arr[18] = 1
 
     start_position = {'x': 0, 'y': 0}
@@ -155,8 +155,8 @@ def main():
         debug_print("[INFO] Initialising Robot and Sweeper...")
         # initialise robot
         shovel = moveShovel.Shovel()
-        #music = playMusic.Music()
-        #music.playMusic()
+        music = playMusic.Music()
+        music.playMusic()
         diffRobot = drive_gyro.Drive_gyro(shovel)
 
         print("[INFO] Initialising the respective Algorithm...")
@@ -286,3 +286,6 @@ if __name__ == '__main__':
     set_cursor(False)
     set_font('Lat15-Terminus24x12')
     main()
+    # shovel = moveShovel.Shovel()
+    # drive = drive_gyro.Drive_gyro(shovel)
+    # drive.test()
