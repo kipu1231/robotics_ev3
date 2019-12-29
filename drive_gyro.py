@@ -27,7 +27,6 @@ class Drive_gyro(object):
         self.gs.mode = 'GYRO-RATE'
         self.gs.mode = 'GYRO-ANG'
         self.shovel = shovel
-        self.current_angle = self.gs.value()
         ultrasonic_sensor = UltrasonicSensor()
         ultrasonic_sensor.mode = 'US-DIST-CM'
         self.ultrasonic_sensor = ultrasonic_sensor
