@@ -15,21 +15,23 @@ class Shovel(object):
        
     
     def moveShovel(self):
-        self.motors.on_for_degrees(speed=10, degrees=-40, brake=True, block=True)
+        #self.motors.on_for_degrees(speed=10, degrees=40, brake=True, block=True)
+        #sleep(1)
+        self.motors.on_for_degrees(speed=40, degrees=100, brake=True, block=True)
+        #sleep(1)
+        self.motors.on_for_degrees(speed=10, degrees=30, brake=True, block=True)
         sleep(1)
-        self.motors.on_for_degrees(speed=80, degrees=-100, brake=True, block=True)
-        sleep(1)
-        self.motors.on_for_degrees(speed=20, degrees=140, brake=True, block=True)
+        self.motors.on_for_degrees(speed=20, degrees=-130, brake=True, block=True)
     
     def moveShovel_Up(self):
         if self.shovel_up == 0:
-            self.motors.on_for_degrees(speed=80, degrees=-140, brake=True, block=True)
+            self.motors.on_for_degrees(speed=50, degrees=130, brake=True, block=True)
             self.shovel_up = 1
             sleep(0.5)
     
     def moveShovel_Down(self):
         if self.shovel_up == 1:
-            self.motors.on_for_degrees(speed=50, degrees=140, brake=True, block=True)
+            self.motors.on_for_degrees(speed=20, degrees=-130, brake=True, block=True)
             self.shovel_up = 0
             sleep(0.5)
         #self.motors.on_for_degrees(speed=70, degrees=-120, brake=True, block=True)

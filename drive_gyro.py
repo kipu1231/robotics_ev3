@@ -42,7 +42,7 @@ class Drive_gyro(object):
             turns = distance/(self  .diam * PI)
             # debug_print(turns)
             now = time.time()
-            future = now + 2.5
+            future = now + 2.09
             while time.time() < future:
                 angle2 = self.gs.value()
                 # distance = self.ultrasonic_sensor.value()
@@ -53,23 +53,23 @@ class Drive_gyro(object):
             self.steer_pair.off()
             
         
-    def turn_left(self,degree=89):
+    def turn_left(self,degree=90):
         debug_print("[INFO] Turn left ...")
         self.shovel.moveShovel_Up()
         self.current_angle -= degree
         while self.gs.value() > self.current_angle:
             diff = self.gs.value() - self.current_angle
-            self.steer_pair.on(-100, speed = -diff)
+            self.steer_pair.on(-100, speed = -diff*0.8)
         #debug_print(self.gs.value())
         self.steer_pair.off()
 
-    def turn_right(self, degree=89):
+    def turn_right(self, degree=90):
         debug_print("[INFO] Turn right ...")
         self.shovel.moveShovel_Up()
         self.current_angle += degree
         while self.gs.value() < self.current_angle:
             diff = self.current_angle - self.gs.value()
-            self.steer_pair.on(100, speed = -diff)
+            self.steer_pair.on(100, speed = -diff*0.8)
         #debug_print(self.gs.value())
         self.steer_pair.off()
 
