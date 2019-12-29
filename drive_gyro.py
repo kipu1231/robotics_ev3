@@ -7,7 +7,7 @@ import time
 import sys
 import moveShovel 
 PI = 3.141592653589793
-THRESHOLD = 250
+THRESHOLD = 200
 
 def debug_print(*args, **kwargs):
     '''Print debug messages to stderr. This shows up in the output panel in VS Code.
@@ -27,6 +27,7 @@ class Drive_gyro(object):
         self.gs.mode = 'GYRO-RATE'
         self.gs.mode = 'GYRO-ANG'
         self.shovel = shovel
+        self.current_angle = self.gs.value()
         ultrasonic_sensor = UltrasonicSensor()
         ultrasonic_sensor.mode = 'US-DIST-CM'
         self.ultrasonic_sensor = ultrasonic_sensor
@@ -38,15 +39,15 @@ class Drive_gyro(object):
         angle = self.gs.value()
         # debug_print(angle)
         if distance != None:
-            turns = distance/(self.diam * PI)
+            turns = distance/(self  .diam * PI)
             # debug_print(turns)
             now = time.time()
             future = now + 2.5
             while time.time() < future:
                 angle2 = self.gs.value()
-                distance = self.ultrasonic_sensor.value()
-                if distance < THRESHOLD:
-                    break
+                # distance = self.ultrasonic_sensor.value()
+                # if distance < THRESHOLD:
+                #     break
                 angle_drive = angle2-angle
                 self.steer_pair.on(angle_drive, speed=dc)
             self.steer_pair.off()
@@ -55,9 +56,9 @@ class Drive_gyro(object):
     def turn_left(self,degree=89):
         debug_print("[INFO] Turn left ...")
         self.shovel.moveShovel_Up()
-        angle = self.gs.value() - degree
-        while self.gs.value() > angle:
-            diff = self.gs.value() - angle
+        self.current_angle -= degree
+        while self.gs.value() > self.current_angle:
+            diff = self.gs.value() - self.current_angle
             self.steer_pair.on(-100, speed = -diff)
         #debug_print(self.gs.value())
         self.steer_pair.off()
@@ -65,9 +66,9 @@ class Drive_gyro(object):
     def turn_right(self, degree=89):
         debug_print("[INFO] Turn right ...")
         self.shovel.moveShovel_Up()
-        angle = self.gs.value() + degree
-        while self.gs.value() < angle:
-            diff = angle - self.gs.value()
+        self.current_angle += degree
+        while self.gs.value() < self.current_angle:
+            diff = self.current_angle - self.gs.value()
             self.steer_pair.on(100, speed = -diff)
         #debug_print(self.gs.value())
         self.steer_pair.off()
